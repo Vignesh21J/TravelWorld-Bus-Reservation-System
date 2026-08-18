@@ -10,9 +10,7 @@ public class BookingDAO {
     public boolean saveBooking(Booking booking) {
 
         String sql = """
-		                INSERT INTO BOOKING
-		                (booking_id, passenger_name, age, gender,
-		                 bus_no, journey_date, amount_paid)
+		                INSERT INTO BOOKING (booking_id, passenger_name, age, gender, bus_no, journey_date, amount_paid)                
 		                VALUES (?, ?, ?, ?, ?, ?, ?)
 	                	""";
 
@@ -25,13 +23,8 @@ public class BookingDAO {
             ps.setString(4, booking.getGender());
             ps.setString(5, booking.getBus().getBusNo());
 
-            ps.setDate(
-                    6,
-                    new java.sql.Date(
-                            booking.getJourneyDate().getTime()
-                    )
-            );
-
+            ps.setDate(6, new java.sql.Date(booking.getJourneyDate().getTime()));
+            
             ps.setDouble(7, booking.getAmountPaid());
 
             int rowsInserted = ps.executeUpdate();
@@ -82,25 +75,25 @@ public class BookingDAO {
 
                 if (rs.next()) {
 
-                    Bus bus = new Bus(
-                            rs.getString("bus_no"),
-                            rs.getInt("capacity"),
-                            rs.getBoolean("is_ac"),
-                            rs.getDouble("ticket_price"),
-                            rs.getString("traveling_duration"),
-                            rs.getString("driver_name"),
-                            rs.getString("from_location"),
-                            rs.getString("to_location")
+                    Bus bus = new Bus(                    		
+                        rs.getString("bus_no"),
+                        rs.getInt("capacity"),
+                        rs.getBoolean("is_ac"),
+                        rs.getDouble("ticket_price"),
+                        rs.getString("traveling_duration"),
+                        rs.getString("driver_name"),
+                        rs.getString("from_location"),
+                        rs.getString("to_location")
                     );
 
                     return new Booking(
-                            rs.getString("passenger_name"),
-                            rs.getInt("age"),
-                            rs.getString("gender"),
-                            rs.getDate("journey_date"),
-                            bus,
-                            rs.getString("booking_id"),
-                            rs.getDouble("amount_paid")
+                        rs.getString("passenger_name"),
+                        rs.getInt("age"),
+                        rs.getString("gender"),
+                        rs.getDate("journey_date"),
+                        bus,
+                        rs.getString("booking_id"),
+                        rs.getDouble("amount_paid")
                     );
                 }
             }
